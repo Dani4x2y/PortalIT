@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title></title>
+
+	<link th:href="@{/css/style2.css}" rel="stylesheet" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+	<link href="css/fontello.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+<div class="wrapper">
+	<div class="nav">
+		<ol>
+			<li><a th:href="@{/index}">Strona główna</a></li>
+			<li><a th:href="@{/edycja_profilu}">Dodaj ogłoszenie</a></li>
+			<li><a href="#">Edytuj profil</a></li>
+			<li><a href="#">Chat</a></li>
+			<li><a href="#">Język Polski/Angielski</a></li>
+			<li><a href="#">Motyw ciemny/jasny</a></li>
+			<li><a href="#">Wyloguj</a></li>
+		</ol>
+
+	</div>
+
+	<div class="content">
+		<div class="content">
+			<!-- Wyświetl formularz wyszukiwania -->
+			<form th:action="@{/joboffers/search}" method="get">
+				<input type="text" name="province" placeholder="Województwo">
+				<input type="number" name="minSalary" placeholder="Minimalne wynagrodzenie">
+				<input type="number" name="maxSalary" placeholder="Maksymalne wynagrodzenie">
+				<button type="submit">Szukaj</button>
+			</form>
+
+			<!-- Lista ogłoszeń -->
+			<h2>Lista ogłoszeń</h2>
+			<ul>
+				<li th:each="jobOffer : ${jobOffers}" class="job-offer">
+					<a th:href="@{/details/{id}(id=${jobOffer.id})}">
+						<div class="job-details">
+							<p class="job-title" th:text="${jobOffer.title}"></p>
+							<p th:text="${jobOffer.salary + ' zł'}" class="job-box-details"></p>
+							<p th:text="${jobOffer.employmentType}" class="job-box-details"></p>
+							<p th:text="${jobOffer.province}" class="job-box-details"></p>
+							<p th:text="${jobOffer.location}" class="job-box-details"></p>
+						</div>
+						<div class="company-logo">
+							<img th:if="${jobOffer != null and jobOffer.company != null}" th:src="${jobOffer.company.logoUrl}" alt="Logo">
+						</div>
+					</a>
+				</li>
+			</ul>
+
+
+		</div>
+
+
+
+	</div>
+
+	<script src="jquery-1.11.3.min.js"></script>
+
+	<script>
+
+   $(document).ready(function() {
+   var NavY = $('.nav').offset().top;
+
+   var stickyNav = function(){
+   var ScrollY = $(window).scrollTop();
+
+   if (ScrollY > NavY) {
+      $('.nav').addClass('sticky');
+   } else {
+      $('.nav').removeClass('sticky');
+   }
+   };
+
+   stickyNav();
+
+   $(window).scroll(function() {
+      stickyNav();
+   });
+   });
+
+</script>
+
+</body>
+</html>
